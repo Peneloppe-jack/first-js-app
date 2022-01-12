@@ -45,4 +45,19 @@ let PokemonList= [
 
 ]
 
-console.log(PokemonList)
+console.log(PokemonList);
+
+// The hardest part here is to make sure that all the correct signs are well placed
+// remember no ; at the end of the conditional // Pay attention to the () {} []
+// Make sure to use  double "" when using \ for 'S  and single '' for the whole quote then
+// Have a break when you take more than 30 min to solve anything !!!
+
+// In this This Loop + conditional I just specify that the pokemon with a height bigger than 1 should have the message appearing
+
+for (var i = 0; i < PokemonList.length; i++) {
+ if (PokemonList[i].height >= 1.0) {
+    document.write('<P>' +  PokemonList[i].name + ( ', height: ' )+ PokemonList[i].height + ( " (Wow, That\'s big !!)") + '<P>');
+ } else {
+   document.write('<P>' +  PokemonList[i].name + ( ', height: ' )+ PokemonList[i].height + '<P>')
+  }
+}
