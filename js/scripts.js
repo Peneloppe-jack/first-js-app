@@ -61,3 +61,37 @@ for (var i = 0; i < PokemonList.length; i++) {
    document.write('<P>' +  PokemonList[i].name + ( ', height: ' )+ PokemonList[i].height + '<P>')
   }
 }
+
+// first I created a for each loop instead  of the for function
+
+PokemonList.forEach(function(Pokemon) {
+  console.log(Pokemon.name + ' Height : ' + Pokemon.height);
+});
+
+// Wrapping PokemonList inside a PokemonRepository Inside an IIFE
+let PokemonRepository = (function () {
+let PokemonList = [];
+
+  function add (pokemon) {
+  PokemonList.push(pokemon);
+}
+
+  function getAll() {
+    return PokemonList;
+  }
+
+  return {
+    add: add,
+    getAll: getAll
+  };
+})();
+
+PokemonRepository.add({
+        name:'wigglytuff',
+        height: 1,
+        type: ['sing' , 'nasty cute-charm']});
+
+console.log(PokemonRepository.getAll());
+// I dint specify new pokemon as an Item to be added to the respository but how to
+// I would like to have also the new pokemon included in the list display on html
+//
