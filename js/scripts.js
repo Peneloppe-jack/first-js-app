@@ -1,5 +1,8 @@
 alert('Hello world');
 
+//creating a pokemon respository in which I included the pokemon´s list
+
+let PokemonRepository = (function () {
 let PokemonList= [
   {
     name:'chamander',
@@ -43,34 +46,7 @@ let PokemonList= [
     type: ['bite' , 'nasty plot']
   }
 
-]
-
-console.log(PokemonList);
-
-// The hardest part here is to make sure that all the correct signs are well placed
-// remember no ; at the end of the conditional // Pay attention to the () {} []
-// Make sure to use  double "" when using \ for 'S  and single '' for the whole quote then
-// Have a break when you take more than 30 min to solve anything !!!
-
-// In this This Loop + conditional I just specify that the pokemon with a height bigger than 1 should have the message appearing
-
-for (var i = 0; i < PokemonList.length; i++) {
- if (PokemonList[i].height >= 1.0) {
-    document.write('<P>' +  PokemonList[i].name + ( ', height: ' )+ PokemonList[i].height + ( " (Wow, That\'s big !!)") + '<P>');
- } else {
-   document.write('<P>' +  PokemonList[i].name + ( ', height: ' )+ PokemonList[i].height + '<P>')
-  }
-}
-
-// first I created a for each loop instead  of the for function
-
-PokemonList.forEach(function(Pokemon) {
-  console.log(Pokemon.name + ' Height : ' + Pokemon.height);
-});
-
-// Wrapping PokemonList inside a PokemonRepository Inside an IIFE
-let PokemonRepository = (function () {
-let PokemonList = [];
+];
 
   function add (pokemon) {
   PokemonList.push(pokemon);
@@ -86,12 +62,21 @@ let PokemonList = [];
   };
 })();
 
+//* The code above is wrapped into an IIFE which protects your code and executes it automatically thanks to the ()
+
+
 PokemonRepository.add({
         name:'wigglytuff',
         height: 1,
         type: ['sing' , 'nasty cute-charm']});
-
 console.log(PokemonRepository.getAll());
-// I dint specify new pokemon as an Item to be added to the respository but how to
-// I would like to have also the new pokemon included in the list display on html
-//
+
+//* The code above (thanks to the function add) adds a single Item into the  repository saved in the IFFE
+//* The getAll function returns an array in the console
+
+
+//After adding a pokemon to the main list  with the function add or push
+//I wrote a function PokemonRepository.getAll().forEach  to access the IFFE + the new item and writes them all on the page
+PokemonRepository.getAll().forEach (function(Pokemon) {
+  document.write('<P>' + Pokemon.name + ' Height : ' + Pokemon.height +'<P>');
+});
