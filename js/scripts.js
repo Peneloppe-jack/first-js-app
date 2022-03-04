@@ -1,12 +1,14 @@
 alert('Hello world');
-//creating a pokemon respository in which I included the pokemon´s list
+//creating a pokemon respository in which the pokemon´s list is included
 
 let PokemonRepository = (function () {
 let PokemonList= [];
 let ApiUrl = 'https://pokeapi.co/api/v2/pokemon/';
+let modalContainer = document.querySelector('#modal-container'); 
 
 // The pokenomonlist is an empty Array linked to the Pokemon API 
-// This allows me to switch from the static list that I made to A complete list of Pokemon 
+// This allows me to switch from the static list I made to A complete list of Pokemon e.g ApiUrl 
+//modal at the top so all funtions can access this variable
 
   function add (pokemon) {
     if (
@@ -18,7 +20,8 @@ let ApiUrl = 'https://pokeapi.co/api/v2/pokemon/';
        console.log("pokemon is not correct");
       }
     }
-// the code above creates a function, condition, loop, to verify the type of object inserted into code 
+//function, condition, loop, to verify the type of object inserted into code 
+
   function getAll() {
   return PokemonList;
 }
@@ -31,11 +34,13 @@ let ApiUrl = 'https://pokeapi.co/api/v2/pokemon/';
     Button.classList.add('button-class');
     ListPokemon.appendChild(Button);
     PokemonList.appendChild(ListPokemon);
+  
+        
     Button.addEventListener('click', function () {
-      showDetails (pokemon);
+      showDetails (pokemon,); // (,modalContainer)to be  added the modal container
 });
 }
-// the code above creates a button, event listener that is called,logged at every click 
+//creates a button, a eListener that is called,logged at every click 
 
   async function loadList() {
   try {
@@ -52,8 +57,8 @@ let ApiUrl = 'https://pokeapi.co/api/v2/pokemon/';
     console.error(e);
   }
 }
-// this is an Asnyc function using the fetch method to get pokemonlist from the "ApiUrl"
-// the result = the "response" = a "promise" = the Json function passed as a parameter of the fetch ()?
+//Asnyc function using the fetch method to get pokemonlist from the "ApiUrl"
+//result = response = promise= the Json function passed as a parameter of the fetch ()
 
   async function loadDetails(item) {
   let url = item.detailsUrl;
@@ -61,24 +66,92 @@ let ApiUrl = 'https://pokeapi.co/api/v2/pokemon/';
     const response = await fetch(url);
     const details = await response.json();
     // let details to item =
+  
     item.imageUrl = details.sprites.front_default;
     item.height = details.height;
-    item.types = details.types;
+    item.types = details.types
   } catch (e) {
     console.error(e);
   }
 }
+//Asnyc function using the fetch method to get pokemonlist from the "ApiUrl"
+//result = response = promise= the Json function passed as a parameter of the fetch ()
 
-// this is an Asnyc function using the fetch method to get pokemon details from the "ApiUrl"
-// the result = the "response" = a "promise" = the Json function passed as a parameter passed as a parameter of the fetch ()?
 
 function showDetails(item) {
    PokemonRepository.loadDetails(item).then(function () {
-     console.log(item);
+    //console.log(item);
+     showModal(item); // once you updated this one the modal appeared on screen on Pokemon click
    });
  }
+// this is a showdetails function in which the loadDetails function is passed ass a parameter
+// be mindfull to change the  show details function so the modal appears on screen instead of console log
+// still has object and undefined apppearing but it works
+// you need to give correct attibutes to picture, title, and content
 
- // this is a show details function in which the loadDetails function is passed ass a parameter
+
+//creating a modal to overlay pokemon details on page
+//remember you created a button in Html that you can delete now?????????????
+function showModal(title, text) {
+  modalContainer.innerHTML = '';
+  let modal = document.createElement('div');
+  modal.classList.add('modal');
+
+  let closeButtonElement = document.createElement('button');
+  closeButtonElement.classList.add('modal-close');
+  closeButtonElement.innerText = 'Close';
+
+  closeButtonElement.addEventListener('click', hideModal); 
+  // eListener added once hide()defined
+
+  let titleElement = document.createElement('h1'); // title =  pokemon.name
+  titleElement.innerText = title;
+// let pokemonName = ("<h1>" + pokemon.name + "</h1>");
+
+// here insert the image 
+//let pokemonImage = pokemonImage.attr("src", pokemon.imageUrl); ref the image created bove 
+
+
+  let contentElement = document.createElement('p');
+  contentElement.innerText = text;
+
+// let pokemonHeight = ("<p>" + "Height : " + pokemon.height + "<p>");
+// let pokemonWeight = ("<p>" + "Weight : " + "pokemon.weight + "<p>");
+// let pokemonType = ("<p>" + "Type : " + "pokemon.type + "<p>");
+  modal.appendChild(closeButtonElement);
+  modal.appendChild(titleElement);
+  modal.appendChild(contentElement);
+  modalContainer.appendChild(modal);
+
+
+  modalContainer.classList.add('is-visible');
+}
+
+function hideModal() {
+  modalContainer.classList.remove('is-visible');
+}
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
+    hideModal();  
+  } // keydown predefined eListner for any key pressed but, here recording ESC as requested
+});
+
+modalContainer.addEventListener('click', (e) => {
+  // Since this is also triggered when clicking INSIDE the modal
+  // We only want to close if the user clicks directly on the overlay
+  let target = e.target;
+  if (target === modalContainer) {
+    hideModal();
+  }
+});
+
+
+// PB with the picture source Ooopssssssssssss document.querySelector('#show-modal').addEventListener('click', () => {
+  //showModal('Modal title', 'This is the modal content!');
+//});
+// modal works now I need my pics and a for each loop to implement the modal on each poke
+
 
   return {
     add: add,
@@ -86,9 +159,10 @@ function showDetails(item) {
     addListItem : addListItem,
     loadList : loadList,
     loadDetails : loadDetails,
-    showDetails : showDetails
+    showDetails : showDetails,
+    showModal : showModal // call back the modal as all previous functions 
   };
-})();
+})(); 
 
 // The code above is wrapped into an IIFE which protects your code and executes it automatically thanks to the ()
 // while creating a function inside an IIFE remember to call it again in the return part of the function right before closing the function with extra ()
@@ -101,3 +175,4 @@ PokemonRepository.loadList().then(function () {
 });
 
 // forEach loop that access the IFFE to load list, details, add Pokemon 
+
