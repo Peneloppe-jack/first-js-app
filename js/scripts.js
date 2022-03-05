@@ -92,7 +92,7 @@ function showDetails(item) {
 
 //creating a modal to overlay pokemon details on page
 //remember you created a button in Html that you can delete now?????????????
-function showModal(title, text) {
+function showModal(item) { //(title, text) at first but then you change to item as you refer to it later
   modalContainer.innerHTML = '';
   let modal = document.createElement('div');
   modal.classList.add('modal');
@@ -105,22 +105,21 @@ function showModal(title, text) {
   // eListener added once hide()defined
 
   let titleElement = document.createElement('h1'); // title =  pokemon.name
-  titleElement.innerText = title;
-// let pokemonName = ("<h1>" + pokemon.name + "</h1>");
-
-// here insert the image 
-//let pokemonImage = pokemonImage.attr("src", pokemon.imageUrl); ref the image created bove 
+  titleElement.innerText = item.name;//title, as you change previously 
 
 
-  let contentElement = document.createElement('p');
-  contentElement.innerText = text;
+let imageElement = document.createElement('img');
+imageElement.setAttribute ("src", item.imageUrl);
+//setting attribute for the src of the image o you can collect pics from API was confusing !!!
+// for no reason!!! 
 
-// let pokemonHeight = ("<p>" + "Height : " + pokemon.height + "<p>");
-// let pokemonWeight = ("<p>" + "Weight : " + "pokemon.weight + "<p>");
-// let pokemonType = ("<p>" + "Type : " + "pokemon.type + "<p>");
+  let heightElement = document.createElement('p');
+  heightElement.innerText = item.height;
+
   modal.appendChild(closeButtonElement);
   modal.appendChild(titleElement);
-  modal.appendChild(contentElement);
+  modal.appendChild(imageElement);
+  modal.appendChild(heightElement);
   modalContainer.appendChild(modal);
 
 
