@@ -2,7 +2,7 @@ alert('Hello world');
 //creating a pokemon respository in which the pokemon´s list is included
 let PokemonRepository = (function () {
 let PokemonList= [];
-let ApiUrl = 'https://pokeapi.co/api/v2/pokemon/';
+let ApiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 let modalContainer = document.querySelector('#modal-container'); 
 // The pokenomonlist is an empty Array linked to the Pokemon API 
 // This allows me to switch from the static list I made to A complete list of Pokemon e.g ApiUrl 
@@ -78,6 +78,8 @@ let modalContainer = document.querySelector('#modal-container');
     console.error(e);
   }
 }
+
+
 //Asnyc function using the fetch method to get pokemonlist from the "ApiUrl"
 //result = response = promise= the Json function passed as a parameter of the fetch ()
 function showDetails(item) {
@@ -86,7 +88,15 @@ function showDetails(item) {
    });
  }
 
+// trying to add a search function 
 
+
+
+//This is a nightmare !!! Ask Rama
+
+
+
+// trying to add a search function 
 
 function showModal(item) { 
   let modalBody = $(".modal-body");
@@ -115,14 +125,17 @@ function showModal(item) {
     loadList : loadList,
     loadDetails : loadDetails,
     showDetails : showDetails,
+    //searchPokemon : searchPokemon,
     showModal : showModal // call back the modal as all previous functions 
   };
 })(); 
 // The code above is wrapped into an IIFE which protects your code and executes it automatically thanks to the ()
 // while creating a function inside an IIFE remember to call it again in the return part of the function right before closing the function with extra ()
 // this goes for all the previously created fucntion in the IFFE
+
 PokemonRepository.loadList().then(function () {
   PokemonRepository.getAll().forEach(function (pokemon) {
     PokemonRepository.addListItem(pokemon);
   });
 });
+
