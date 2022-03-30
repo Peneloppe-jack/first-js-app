@@ -1,4 +1,3 @@
-alert('Hello world');
 //creating a pokemon respository in which the pokemon´s list is included
 let PokemonRepository = (function () {
 let PokemonList= [];
@@ -73,7 +72,15 @@ let modalContainer = document.querySelector('#modal-container');
   
     item.imageUrl = details.sprites.front_default;
     item.height = details.height;
-    item.types = details.types;
+    item.types = [];
+    for (let i = 0; i < details.types.length; i++) {
+      item.types.push(details.types[i].type.name);
+    }
+    item.weight = details.weight;
+    item.abilities = [];
+    for (let i = 0; i < details.abilities.length; i++) {
+      item.abilities.push(details.abilities[i].ability.name);
+    }
   } catch (e) {
     console.error(e);
   }
@@ -90,11 +97,16 @@ function showDetails(item) {
 
 // trying to add a search function 
 
+ searchBar.addEventListener('keyup', (e) => {
+  const searchString = e.target.value.toLowerCase();
 
-
-//This is a nightmare !!! Ask Rama
-
-
+  const filteredPokemon = PokemonList.filter((pokemon) => {
+      return (
+          pokemon.name.toLowerCase().includes(searchString) 
+      );
+  });
+  showDetails(filteredPokemon);
+});
 
 // trying to add a search function 
 
@@ -110,11 +122,17 @@ function showModal(item) {
   let imageElement = document.createElement('img');
   imageElement.setAttribute ("src", item.imageUrl);
   
-  let heightElement = $ ("<p> " + "Height : " + item.height + "</p> ")
+  let heightElement = $ ("<p> " + "Height : " + item.height + "</p> ");
+  let weightElement = $ ("<p> " + "Weight : " + item.weight + "</p> ");
+  let typesElement = $ ("<p> " + "Types : " + item.types + "</p> ");
+  let abilitiesElement = $ ("<p> " + "Abilities : " + item.abilities + "</p> ");
   
   modalTitle.append(nameElement);
   modalBody.append(imageElement);
   modalBody.append(heightElement);
+  modalTitle.append(weightElement);
+  modalBody.append(typesElement);
+  modalBody.append(abilitiesElement);
 
 }
 
@@ -125,7 +143,7 @@ function showModal(item) {
     loadList : loadList,
     loadDetails : loadDetails,
     showDetails : showDetails,
-    //searchPokemon : searchPokemon,
+    //filteredPokemon : ,
     showModal : showModal // call back the modal as all previous functions 
   };
 })(); 
