@@ -3,7 +3,14 @@ let PokemonRepository = (function () {
 let PokemonList= [];
 let ApiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 let modalContainer = document.querySelector('#modal-container'); 
-// The pokenomonlist is an empty Array linked to the Pokemon API 
+
+// adding search function 
+let pokemons;
+let filteredPokemons = [];
+let pokemonList = document.getElementById('pokemonList')
+// adding search function
+
+// The pokemonlist is an empty Array linked to the Pokemon API 
 // This allows me to switch from the static list I made to A complete list of Pokemon e.g ApiUrl 
 //modal at the top so all funtions can access this variable
   function add (pokemon) {
@@ -16,11 +23,11 @@ let modalContainer = document.querySelector('#modal-container');
        console.log("pokemon is not correct");
       }
     }
-//function, condition, loop, to verify the type of object inserted into code 
-  function getAll() {
-  return PokemonList;
+// trying to add a search function 
+function listPokemons(pokemons) {
+  pokemonList.innerHTML = ""
+  pokemons.forEach((pokemon) => addListItem (pokemon));
 }
-
 
 
   function addListItem (pokemon) {
@@ -57,6 +64,7 @@ let modalContainer = document.querySelector('#modal-container');
       };
       add(pokemon);
     });
+    listPokemons(PokemonList) //Loading list item and calllback to searchB async.
   } catch (e) {
     console.error(e);
   }
@@ -97,15 +105,16 @@ function showDetails(item) {
 
 // trying to add a search function 
 
- searchBar.addEventListener('keyup', (e) => {
+searchBar.addEventListener('keyup', (e) => {
+  
   const searchString = e.target.value.toLowerCase();
-
-  const filteredPokemon = PokemonList.filter((pokemon) => {
+  console.log(searchString)
+  const filteredPokemons = PokemonList.filter((pokemon) => {
       return (
           pokemon.name.toLowerCase().includes(searchString) 
       );
   });
-  showDetails(filteredPokemon);
+  listPokemons(filteredPokemons);
 });
 
 // trying to add a search function 
@@ -138,12 +147,10 @@ function showModal(item) {
 
   return {
     add: add,
-    getAll: getAll,
     addListItem : addListItem,
     loadList : loadList,
     loadDetails : loadDetails,
     showDetails : showDetails,
-    //filteredPokemon : ,
     showModal : showModal // call back the modal as all previous functions 
   };
 })(); 
@@ -151,9 +158,5 @@ function showModal(item) {
 // while creating a function inside an IIFE remember to call it again in the return part of the function right before closing the function with extra ()
 // this goes for all the previously created fucntion in the IFFE
 
-PokemonRepository.loadList().then(function () {
-  PokemonRepository.getAll().forEach(function (pokemon) {
-    PokemonRepository.addListItem(pokemon);
-  });
-});
+PokemonRepository.loadList()
 
